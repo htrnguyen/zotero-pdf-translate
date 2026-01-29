@@ -28,6 +28,7 @@ service-customgpt2=Custom GPT 2
 service-customgpt3=Custom GPT 3
 service-azuregpt=AzureGPT
 service-gemini=Gemini
+service-groq=Groq
 service-qwenmt=Qwen-MT
 service-claude=Claude
 service-haici=Haici
@@ -91,9 +92,14 @@ service-azuregpt-dialog-custom-request=Custom Request
 
 service-xftrans-dialog-engine=API Engine
 
-service-gemini-dialog-endPoint=EndPoint
-service-gemini-dialog-prompt=Prompt
 service-gemini-dialog-stream=Stream
+
+service-groq-dialog-endPoint=API
+service-groq-dialog-model=Model
+service-groq-dialog-temperature=Temp
+service-groq-dialog-prompt=Prompt
+service-groq-dialog-stream=Stream
+service-groq-dialog-custom-request=Custom Request
 
 service-qwenmt-dialog-endPoint=EndPoint
 service-qwenmt-dialog-model=Model

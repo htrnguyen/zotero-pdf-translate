@@ -245,10 +245,10 @@ function buildPrefsPane() {
   doc
     .querySelector(`#${makeId("reset-titleTranslation")}`)
     ?.addEventListener("command", (e: Event) => {
-      ztoolkit
+      (ztoolkit as any)
         .getGlobal("ZoteroPane")
         .getSelectedItems()
-        .forEach((item) => {
+        .forEach((item: Zotero.Item) => {
           ztoolkit.ExtraField.setExtraField(item, "titleTranslation", "");
         });
     });
@@ -256,10 +256,10 @@ function buildPrefsPane() {
   doc
     .querySelector(`#${makeId("reset-abstractTranslation")}`)
     ?.addEventListener("command", (e: Event) => {
-      ztoolkit
+      (ztoolkit as any)
         .getGlobal("ZoteroPane")
         .getSelectedItems()
-        .forEach((item) => {
+        .forEach((item: Zotero.Item) => {
           ztoolkit.ExtraField.setExtraField(item, "abstractTranslation", "");
         });
     });
@@ -392,7 +392,7 @@ function onPrefsEvents(type: string, fromElement: boolean = true) {
         const secretCheckResult = validateServiceSecret(
           serviceId,
           (validateResult) => {
-            if (fromElement && !validateResult.status) {
+            if (fromElement && !validateResult.status && serviceId !== "groq") {
               addon.data.prefs.window?.alert(
                 `You see this because the translation service ${serviceId} requires SECRET, which is NOT correctly set.\n\nDetails:\n${validateResult.info}`,
               );
@@ -451,7 +451,7 @@ function onPrefsEvents(type: string, fromElement: boolean = true) {
         const secretCheckResult = validateServiceSecret(
           serviceId,
           (validateResult) => {
-            if (fromElement && !validateResult.status) {
+            if (fromElement && !validateResult.status && serviceId !== "groq") {
               addon.data.prefs.window?.alert(
                 `You see this because the translation service ${serviceId} requires SECRET, which is NOT correctly set.\n\nDetails:\n${validateResult.info}`,
               );

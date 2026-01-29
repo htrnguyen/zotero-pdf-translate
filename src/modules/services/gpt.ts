@@ -1,7 +1,7 @@
 import { getPref, getString, transformPromptWithContext } from "../../utils";
 import { TranslateService } from "./base";
 
-type ID = "chatgpt" | "customgpt1" | "customgpt2" | "customgpt3" | "azuregpt";
+type ID = "chatgpt" | "customgpt1" | "customgpt2" | "customgpt3" | "azuregpt" | "groq";
 
 function getCustomParams(prefix: string): Record<string, any> {
   const storedCustomParams =
@@ -131,12 +131,19 @@ const gptTranslate = async function (
   prefix: string,
   data: Parameters<TranslateService["translate"]>[0],
   stream?: boolean,
+  overridePrompt?: string,
 ) {
   function transformContent(
     langFrom: string,
     langTo: string,
     sourceText: string,
   ) {
+    if (overridePrompt) {
+      return overridePrompt
+        .replace(/\${langFrom}/g, langFrom)
+        .replace(/\${langTo}/g, langTo)
+        .replace(/\${sourceText}/g, sourceText);
+    }
     return transformPromptWithContext(
       `${prefix}.prompt`,
       langFrom,
@@ -303,16 +310,13 @@ const gptTranslate = async function (
 };
 
 function createGPTService(id: ID): TranslateService {
-  const checkSecret = id === "azuregpt" || id === "chatgpt";
+  const checkSecret = id === "azuregpt" || id === "chatgpt" || id === "groq";
 
   // For compatibility reasons, in older versions, the preference key was `chatGPT`, rather than matching the ID.
   // Additionally, customGPT was not initialized in prefs.js.
-  const prefPrefix = id.replace("gpt", "GPT") as
-    | "chatGPT"
-    // | "customGPT1"
-    // | "customGPT2"
-    // | "customGPT3"
-    | "azureGPT";
+  const prefPrefix = (
+    id === "groq" ? "groq" : id.replace("gpt", "GPT")
+  ) as "chatGPT" | "azureGPT" | "groq";
 
   return {
     id,
@@ -325,8 +329,11 @@ function createGPTService(id: ID): TranslateService {
     ...(checkSecret && {
       defaultSecret: "",
       secretValidator(secret: string) {
-        if (id === "chatgpt") {
-          const status = /^sk-[A-Za-z0-9_-]{32,}$/.test(secret);
+        if (id === "chatgpt" || id === "groq") {
+          const status =
+            id === "chatgpt"
+              ? /^sk-[A-Za-z0-9_-]{32,}$/.test(secret)
+              : secret.length > 0;
           const empty = secret.length === 0;
           return {
             secret,
@@ -334,8 +341,8 @@ function createGPTService(id: ID): TranslateService {
             info: empty
               ? "The secret is not set."
               : status
-                ? "Click the button to check connectivity."
-                : "The secret key format is invalid.",
+              ? "Click the button to check connectivity."
+              : "The secret key format is invalid.",
           };
         }
 
@@ -385,6 +392,7 @@ function createGPTService(id: ID): TranslateService {
         }
 
         case "chatgpt":
+        case "groq":
         case "customgpt1":
         case "customgpt2":
         case "customgpt3": {
@@ -468,3 +476,4 @@ export const customGPT1 = createGPTService("customgpt1");
 export const customGPT2 = createGPTService("customgpt2");
 export const customGPT3 = createGPTService("customgpt3");
 export const azureGPT = createGPTService("azuregpt");
+export const Groq = createGPTService("groq");

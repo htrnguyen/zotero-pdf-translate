@@ -85,6 +85,12 @@ declare namespace _ZoteroTypes {
       "qwenmt.domains": string;
       "aliyun.action": string;
       "aliyun.scene": string;
+      "groq.endPoint": string;
+      "groq.model": string;
+      "groq.temperature": string;
+      "groq.prompt": string;
+      "groq.stream": boolean;
+      "groq.customParams": string;
       "enableMathRendering": boolean;
       "stripEmptyLines": boolean;
       "libretranslate.endpoint": string;

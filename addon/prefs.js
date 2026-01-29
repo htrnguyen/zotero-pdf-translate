@@ -97,6 +97,15 @@ pref("__prefsPrefix__.qwenmt.model", "qwen-mt-plus");
 pref("__prefsPrefix__.qwenmt.domains", "");
 pref("__prefsPrefix__.aliyun.action", "TranslateGeneral");
 pref("__prefsPrefix__.aliyun.scene", "general");
+pref("__prefsPrefix__.groq.endPoint", "https://api.groq.com/openai/v1/chat/completions");
+pref("__prefsPrefix__.groq.model", "llama-3.3-70b-versatile");
+pref("__prefsPrefix__.groq.temperature", "1.0");
+pref(
+  "__prefsPrefix__.groq.prompt",
+  "As an academic expert with specialized knowledge in various fields, please automatically detect the source language and provide a proficient and precise translation into ${langTo} of the academic text enclosed in 🔤. It is crucial to maintaining the original phrase or sentence and ensure accuracy while utilizing the appropriate language. The text is as follows:  🔤 ${sourceText} 🔤  Please provide the translated result without any additional explanation and remove 🔤.",
+);
+pref("__prefsPrefix__.groq.stream", true);
+pref("__prefsPrefix__.groq.customParams", "");
 
 pref("__prefsPrefix__.enableMathRendering", false);
 pref("__prefsPrefix__.stripEmptyLines", false);
